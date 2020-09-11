@@ -1,0 +1,70 @@
+{
+	"name": "dfCliente",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_cliente_in",
+						"type": "DatasetReference"
+					},
+					"name": "ClienteIn"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_CabeceraVenta_in",
+						"type": "DatasetReference"
+					},
+					"name": "CabeceraVentaIn"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_DetalleVenta_in",
+						"type": "DatasetReference"
+					},
+					"name": "DetalleVentaIn"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Direccion_in",
+						"type": "DatasetReference"
+					},
+					"name": "DireccionIn"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_cliente_out",
+						"type": "DatasetReference"
+					},
+					"name": "Cliente"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_CabeceraVenta_out",
+						"type": "DatasetReference"
+					},
+					"name": "CabeceraVenta"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_CabeceraVenta_out",
+						"type": "DatasetReference"
+					},
+					"name": "DetalleVenta"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Direccion_out",
+						"type": "DatasetReference"
+					},
+					"name": "Direccion"
+				}
+			],
+			"transformations": [],
+			"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> ClienteIn\nsource(output(\n\t\tOrderID as string,\n\t\tCustomerID as string,\n\t\tOrderDate as string,\n\t\tShipDate as string,\n\t\tTotalCost as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> CabeceraVentaIn\nsource(output(\n\t\tOrderDetailID as string,\n\t\tOrderID as string,\n\t\tMovieID as string,\n\t\tQuantity as string,\n\t\tUnitCost as string,\n\t\tLineNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> DetalleVentaIn\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> DireccionIn\nClienteIn sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Cliente\nCabeceraVentaIn sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> CabeceraVenta\nDetalleVentaIn sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> DetalleVenta\nDireccionIn sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Direccion"
+		}
+	}
+}

@@ -1,0 +1,42 @@
+{
+	"name": "DestinationDataset_n6h",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkedwh",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "CustomerID",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "LastName",
+				"type": "varchar"
+			},
+			{
+				"name": "FirstName",
+				"type": "varchar"
+			},
+			{
+				"name": "PhoneNumber",
+				"type": "char"
+			},
+			{
+				"name": "CreatedDate",
+				"type": "date"
+			},
+			{
+				"name": "UpdatedDate",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DimCliente"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
