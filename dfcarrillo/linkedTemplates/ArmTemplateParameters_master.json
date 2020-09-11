@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "dfcarrillo"
+		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"value": ""
+		},
+		"SqlServer1_connectionString": {
+			"value": ""
+		},
+		"linkedCSVFourthCoffee_password": {
+			"value": ""
+		},
+		"linkedSales_connectionString": {
+			"value": ""
+		},
+		"linkedcosmosdb_connectionString": {
+			"value": ""
+		},
+		"linkeddatalake_accountKey": {
+			"value": ""
+		},
+		"linkeddwh_connectionString": {
+			"value": ""
+		},
+		"linkedstreaming_connectionString": {
+			"value": ""
+		},
+		"linkedwh_connectionString": {
+			"value": ""
+		},
+		"linkedCSVFourthCoffee_properties_typeProperties_host": {
+			"value": "C:\\Rentals"
+		},
+		"linkedCSVFourthCoffee_properties_typeProperties_userId": {
+			"value": "openhackadmin"
+		},
+		"linkeddatalake_properties_typeProperties_url": {
+			"value": "https://dlscarrillo.dfs.core.windows.net"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

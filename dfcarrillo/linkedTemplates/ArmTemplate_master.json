@@ -1,0 +1,186 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "dfcarrillo"
+		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalytics1'"
+		},
+		"SqlServer1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServer1'"
+		},
+		"linkedCSVFourthCoffee_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'linkedCSVFourthCoffee'"
+		},
+		"linkedSales_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'linkedSales'"
+		},
+		"linkedcosmosdb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'linkedcosmosdb'"
+		},
+		"linkeddatalake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'linkeddatalake'"
+		},
+		"linkeddwh_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'linkeddwh'"
+		},
+		"linkedstreaming_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'linkedstreaming'"
+		},
+		"linkedwh_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'linkedwh'"
+		},
+		"linkedCSVFourthCoffee_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Rentals"
+		},
+		"linkedCSVFourthCoffee_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "openhackadmin"
+		},
+		"linkeddatalake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dlscarrillo.dfs.core.windows.net"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "dfcarrillo_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureSynapseAnalytics1_connectionString": {
+						"value": "[parameters('AzureSynapseAnalytics1_connectionString')]"
+					},
+					"linkedSales_connectionString": {
+						"value": "[parameters('linkedSales_connectionString')]"
+					},
+					"linkedcosmosdb_connectionString": {
+						"value": "[parameters('linkedcosmosdb_connectionString')]"
+					},
+					"linkeddatalake_accountKey": {
+						"value": "[parameters('linkeddatalake_accountKey')]"
+					},
+					"linkeddwh_connectionString": {
+						"value": "[parameters('linkeddwh_connectionString')]"
+					},
+					"linkedstreaming_connectionString": {
+						"value": "[parameters('linkedstreaming_connectionString')]"
+					},
+					"linkedwh_connectionString": {
+						"value": "[parameters('linkedwh_connectionString')]"
+					},
+					"linkeddatalake_properties_typeProperties_url": {
+						"value": "[parameters('linkeddatalake_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "dfcarrillo_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'dfcarrillo_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "dfcarrillo_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"SqlServer1_connectionString": {
+						"value": "[parameters('SqlServer1_connectionString')]"
+					},
+					"linkedCSVFourthCoffee_password": {
+						"value": "[parameters('linkedCSVFourthCoffee_password')]"
+					},
+					"linkedCSVFourthCoffee_properties_typeProperties_host": {
+						"value": "[parameters('linkedCSVFourthCoffee_properties_typeProperties_host')]"
+					},
+					"linkedCSVFourthCoffee_properties_typeProperties_userId": {
+						"value": "[parameters('linkedCSVFourthCoffee_properties_typeProperties_userId')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'dfcarrillo_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "dfcarrillo_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'dfcarrillo_ArmTemplate_2')]"
+			]
+		}
+	]
+}

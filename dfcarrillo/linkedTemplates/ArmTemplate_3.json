@@ -1,0 +1,220 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "dfcarrillo"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_t5n')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "linkedCSVFourthCoffee",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "Transactions.csv"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "TransactionID",
+						"type": "String"
+					},
+					{
+						"name": "CustomerID",
+						"type": "String"
+					},
+					{
+						"name": "MovieID",
+						"type": "String"
+					},
+					{
+						"name": "RentalDate",
+						"type": "String"
+					},
+					{
+						"name": "ReturnDate",
+						"type": "String"
+					},
+					{
+						"name": "RentalCost",
+						"type": "String"
+					},
+					{
+						"name": "LateFee",
+						"type": "String"
+					},
+					{
+						"name": "RewindFlag",
+						"type": "String"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "String"
+					},
+					{
+						"name": "UpdatedDate",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dfCliente')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_cliente_in",
+								"type": "DatasetReference"
+							},
+							"name": "ClienteIn"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_CabeceraVenta_in",
+								"type": "DatasetReference"
+							},
+							"name": "CabeceraVentaIn"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_DetalleVenta_in",
+								"type": "DatasetReference"
+							},
+							"name": "DetalleVentaIn"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_Direccion_in",
+								"type": "DatasetReference"
+							},
+							"name": "DireccionIn"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_cliente_out",
+								"type": "DatasetReference"
+							},
+							"name": "Cliente"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_CabeceraVenta_out",
+								"type": "DatasetReference"
+							},
+							"name": "CabeceraVenta"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_CabeceraVenta_out",
+								"type": "DatasetReference"
+							},
+							"name": "DetalleVenta"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_Direccion_out",
+								"type": "DatasetReference"
+							},
+							"name": "Direccion"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SistemaOrigen"
+						},
+						{
+							"name": "SistemaOrigen2"
+						},
+						{
+							"name": "SistemaOrigen3"
+						},
+						{
+							"name": "SistemaOrigen4"
+						}
+					],
+					"script": "source(output(\n\t\tCustomerID as string,\n\t\tLastName as string,\n\t\tFirstName as string,\n\t\tPhoneNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> ClienteIn\nsource(output(\n\t\tOrderID as string,\n\t\tCustomerID as string,\n\t\tOrderDate as string,\n\t\tShipDate as string,\n\t\tTotalCost as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> CabeceraVentaIn\nsource(output(\n\t\tOrderDetailID as string,\n\t\tOrderID as string,\n\t\tMovieID as string,\n\t\tQuantity as string,\n\t\tUnitCost as string,\n\t\tLineNumber as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> DetalleVentaIn\nsource(output(\n\t\tAddressID as string,\n\t\tCustomerID as string,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tState as string,\n\t\tZipCode as string,\n\t\tCreatedDate as string,\n\t\tUpdatedDate as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> DireccionIn\nClienteIn derive(SistemaOrigen = \"Southridge\") ~> SistemaOrigen\nCabeceraVentaIn derive(SistemaOrigen = \"Southridge\") ~> SistemaOrigen2\nDetalleVentaIn derive(SistemaOrigen = \"Southridge\") ~> SistemaOrigen3\nDireccionIn derive(SistemaOrigen = \"Southridge\") ~> SistemaOrigen4\nSistemaOrigen sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\ttruncate: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Cliente\nSistemaOrigen2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\ttruncate: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> CabeceraVenta\nSistemaOrigen3 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\ttruncate: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> DetalleVenta\nSistemaOrigen4 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\ttruncate: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Direccion"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/plDsaCliente')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Datos",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dfCliente",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"ClienteIn": {},
+									"CabeceraVentaIn": {},
+									"DetalleVentaIn": {},
+									"DireccionIn": {},
+									"Cliente": {},
+									"CabeceraVenta": {},
+									"DetalleVenta": {},
+									"Direccion": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"folder": {
+					"name": "DSA"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-09-11T19:02:52Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dfCliente')]"
+			]
+		}
+	]
+}
