@@ -1,7 +1,6 @@
 {
-	"name": "DestinationDataset_r6o",
+	"name": "DS_DestinationCoffe_OnlineMovieMappings",
 	"properties": {
-		"description": "prueba",
 		"linkedServiceName": {
 			"referenceName": "linkeddatalake",
 			"type": "LinkedServiceReference"
@@ -15,9 +14,9 @@
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
+			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": []
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
