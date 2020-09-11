@@ -1,0 +1,9 @@
+{
+	"name": "plCopyData_Coffe_Customers",
+	"properties": {
+		"folder": {
+			"name": "Transaccionales"
+		},
+		"annotations": []
+	}
+}
