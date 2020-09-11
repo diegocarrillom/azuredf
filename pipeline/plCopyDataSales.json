@@ -1,6 +1,7 @@
 {
 	"name": "plCopyDataSales",
 	"properties": {
+		"description": "prueba",
 		"activities": [
 			{
 				"name": "ForEach_jrg",
