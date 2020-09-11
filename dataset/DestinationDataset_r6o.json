@@ -1,6 +1,7 @@
 {
 	"name": "DestinationDataset_r6o",
 	"properties": {
+		"description": "prueba",
 		"linkedServiceName": {
 			"referenceName": "linkeddatalake",
 			"type": "LinkedServiceReference"
